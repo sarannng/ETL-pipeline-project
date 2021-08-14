@@ -1,0 +1,129 @@
+------------------------------------------------------------------------------
+Linked service keys
+
+BLOB 
+ "connectionString": "DefaultEndpointsProtocol=https;AccountName=cloudshell1234937168;EndpointSuffix=core.windows.net;",
+
+
+sql
+ "connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=saranngserver.database.windows.net;initial catalog=saranngdb;user id=saranng",
+
+
+ -----------------------------------------------------------------------------
+ 
+Create table CDW_SAPP_D_CUSTOMER(
+
+CUST_ID Numeric(10) primary key NOT NULL IDENTITY(1,1),
+
+CUST_F_NAME Varchar(40) NOT NULL,
+
+CUST_M_NAME Varchar(40),
+
+CUST_L_NAME Varchar(40),
+
+CUST_SSN Numeric(9) NOT NULL,
+
+CUST_STREET Varchar(38),
+
+CUST_CITY Varchar(30) NOT NULL,
+
+CUST_STATE Varchar(30),
+
+CUST_COUNTRY Varchar(30),
+
+CUST_ZIP Numeric(7),
+
+CUST_PHONE Varchar(12),
+
+CUST_EMAIL Varchar(40),
+
+);
+
+SET IDENTITY_INSERT CDW_SAPP_D_CUSTOMER ON;
+ 
+Create table CDW_SAPP_D_Geography(
+
+Geography_ID Numeric(10) primary key NOT NULL,
+
+Geography_NAME Varchar(40) NOT NULL,
+
+);
+ 
+Create table CDW_SAPP_D_VENDORS(
+
+Vendor_ID numeric(10) primary key NOT NULL identity(1,1),
+
+Vendor_NAME Varchar(40) NOT NULL,
+
+VENDOR_SSN Numeric(9) NOT NULL,
+
+Vendor_streetname Varchar(40),
+
+Vendor_CITY Varchar(20) NOT NULL,
+
+Vendor_STATE Varchar(20),
+
+Vendor_COUNTRY Varchar(20),
+
+Vendor_ZIP NUMeric(7),
+
+Vendor_Phone Varchar(12),
+
+Vendor_EMAIL Varchar(30),
+
+);
+
+
+SET IDENTITY_INSERT CDW_SAPP_D_vendors ON;
+ 
+Create table CDW_SAPP_D_PART(
+
+Part_ID Numeric(10) primary key NOT NULL,
+
+part_NAME Varchar(40) NOT NULL,
+
+No_of_part numeric(10) NOT NULL,
+
+price numeric(10) NOT NULL,
+
+);
+
+ 
+Create table CDW_SAPP_D_Vendor_parts(
+
+Vendor_ID Numeric(10) primary key NOT NULL,
+
+Vendor_Ssn Numeric(9)NOT NULL,
+
+Part_ID Numeric(10) ,
+
+part_NAME Varchar(40) NOT NULL,
+
+);
+ 
+
+Create table CDW_SAPP_F_PART_SALE_FACT(
+
+CUST_ID Numeric(10) NOT NULL,
+
+CUST_SSN Numeric(9) NOT NULL,
+
+Vendor_ID Numeric(10) not null,
+
+Vendor_NAME Varchar(40) NOT NULL,
+
+VENDOR_SSN Numeric(9) NOT NULL,
+
+Geography_ID Numeric(10) NOT NULL,
+
+Part_ID Numeric(10) NOT NULL,
+
+part_NAME Varchar(40) NOT NULL,
+
+No_of_part numeric(10) NOT NULL,
+
+price numeric(10) NOT NULL,
+
+tOTAL_PRICE numeric(20)
+
+); 

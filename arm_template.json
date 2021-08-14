@@ -1,0 +1,1325 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "saranngDF"
+        },
+        "SQLoutput_connectionString": {
+            "type": "secureString",
+            "metadata": "Secure string for 'connectionString' of 'SQLoutput'"
+        },
+        "inputblob_connectionString": {
+            "type": "secureString",
+            "metadata": "Secure string for 'connectionString' of 'inputblob'"
+        },
+        "BLOBIP_connectionString": {
+            "type": "secureString",
+            "metadata": "Secure string for 'connectionString' of 'BLOBIP'"
+        },
+        "SQLOP_connectionString": {
+            "type": "secureString",
+            "metadata": "Secure string for 'connectionString' of 'SQLOP'"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/CustomerPIP')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "customerdf",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "CustomerDataflow",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "customer": {},
+                                    "customerload": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "annotations": [],
+                "lastPublishTime": "2021-07-06T04:38:12Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/CustomerDataflow')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PartPIP')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "partdf",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "PartDataflow",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "part": {},
+                                    "loadpart": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "annotations": [],
+                "lastPublishTime": "2021-07-06T04:38:12Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/PartDataflow')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/GeographyPIP')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "geographydf",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "GeoDataflow",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "geography": {},
+                                    "loadgeography": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "annotations": [],
+                "lastPublishTime": "2021-07-06T04:38:13Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/GeoDataflow')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/VendorpartPIP')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "vendpart",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "VendorpartDataflow",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "source1": {},
+                                    "source2": {},
+                                    "source3": {},
+                                    "source4": {},
+                                    "sink1": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "annotations": [],
+                "lastPublishTime": "2021-07-06T04:38:13Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/VendorpartDataflow')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/FactPIP')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "factdf",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "FactDataflow",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "source1": {},
+                                    "source2": {},
+                                    "source3": {},
+                                    "source4": {},
+                                    "source5": {},
+                                    "sink1": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "annotations": [],
+                "lastPublishTime": "2021-07-06T04:38:13Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/FactDataflow')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/VendorPIP')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "vendordf",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "VendorDataflow",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "vendor": {},
+                                    "loadvendor": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "annotations": [],
+                "lastPublishTime": "2021-07-06T04:38:14Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/VendorDataflow')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/vendorblob')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "BLOBIP",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobStorageLocation",
+                        "fileName": "CDW_SAPP_D_VENDORS.csv",
+                        "container": "source"
+                    },
+                    "columnDelimiter": ",",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "Vendor_NAME",
+                        "type": "String"
+                    },
+                    {
+                        "name": "Vendor_SSN",
+                        "type": "String"
+                    },
+                    {
+                        "name": "Vendor_streetname",
+                        "type": "String"
+                    },
+                    {
+                        "name": "Vendor_CITY",
+                        "type": "String"
+                    },
+                    {
+                        "name": "Vendor_STATE",
+                        "type": "String"
+                    },
+                    {
+                        "name": "Vendor_COUNTRY ",
+                        "type": "String"
+                    },
+                    {
+                        "name": "Vendor_ZIP",
+                        "type": "String"
+                    },
+                    {
+                        "name": "Vendor_Phone",
+                        "type": "String"
+                    },
+                    {
+                        "name": "Vendor_EMAIL",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/BLOBIP')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/geographyblob')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "BLOBIP",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobStorageLocation",
+                        "fileName": "CDW_SAPP_D_Geography.csv",
+                        "container": "source"
+                    },
+                    "columnDelimiter": ",",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "Geography_ID",
+                        "type": "String"
+                    },
+                    {
+                        "name": "Geography_NAME ",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/BLOBIP')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/customerblob')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "BLOBIP",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobStorageLocation",
+                        "fileName": "CDW_SAPP_D_CUSTOMER.csv",
+                        "container": "source"
+                    },
+                    "columnDelimiter": ",",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "CUST_F_NAME",
+                        "type": "String"
+                    },
+                    {
+                        "name": "CUST_M_NAME",
+                        "type": "String"
+                    },
+                    {
+                        "name": "CUST_L_NAME",
+                        "type": "String"
+                    },
+                    {
+                        "name": "CUST_SSN",
+                        "type": "String"
+                    },
+                    {
+                        "name": "CUST_STREET",
+                        "type": "String"
+                    },
+                    {
+                        "name": "CUST_CITY",
+                        "type": "String"
+                    },
+                    {
+                        "name": "CUST_STATE",
+                        "type": "String"
+                    },
+                    {
+                        "name": "CUST_COUNTRY",
+                        "type": "String"
+                    },
+                    {
+                        "name": "CUST_ZIP",
+                        "type": "String"
+                    },
+                    {
+                        "name": "CUST_PHONE",
+                        "type": "String"
+                    },
+                    {
+                        "name": "CUST_EMAIL",
+                        "type": "String"
+                    },
+                    {
+                        "name": "APT_NO",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/BLOBIP')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/partblob')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "BLOBIP",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobStorageLocation",
+                        "fileName": "CDW_SAPP_D_PART.csv",
+                        "container": "source"
+                    },
+                    "columnDelimiter": ",",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "Part_ID",
+                        "type": "String"
+                    },
+                    {
+                        "name": "part_NAME",
+                        "type": "String"
+                    },
+                    {
+                        "name": "No of part ",
+                        "type": "String"
+                    },
+                    {
+                        "name": "price",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/BLOBIP')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/factblob')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "BLOBIP",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobStorageLocation",
+                        "fileName": "CDW_SAPP_F_PART_SALE_FACT.csv",
+                        "container": "source"
+                    },
+                    "columnDelimiter": ",",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "CUST_SSN",
+                        "type": "String"
+                    },
+                    {
+                        "name": "VENDOR_SSN",
+                        "type": "String"
+                    },
+                    {
+                        "name": "Geography_ID",
+                        "type": "String"
+                    },
+                    {
+                        "name": "Part_ID",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/BLOBIP')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/customersql')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "SQLOP",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "CUST_ID",
+                        "type": "decimal",
+                        "precision": 10,
+                        "scale": 0
+                    },
+                    {
+                        "name": "CUST_F_NAME",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "CUST_M_NAME",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "CUST_L_NAME",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "CUST_SSN",
+                        "type": "decimal",
+                        "precision": 9,
+                        "scale": 0
+                    },
+                    {
+                        "name": "CUST_STREET",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "CUST_CITY",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "CUST_STATE",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "CUST_COUNTRY",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "CUST_ZIP",
+                        "type": "decimal",
+                        "precision": 7,
+                        "scale": 0
+                    },
+                    {
+                        "name": "CUST_PHONE",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "CUST_EMAIL",
+                        "type": "varchar"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "CDW_SAPP_D_CUSTOMER_906726"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/SQLOP')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/partsql')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "SQLOP",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "Part_ID",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "part_NAME",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "No_of_part",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "price",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "CDW_SAPP_D_PART_906726"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/SQLOP')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/vendorpartblob')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "BLOBIP",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobStorageLocation",
+                        "fileName": "CDW_SAPP_D_Vendor_parts.csv",
+                        "container": "source"
+                    },
+                    "columnDelimiter": ",",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "Vendor_Ssn",
+                        "type": "String"
+                    },
+                    {
+                        "name": "Part_ID",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/BLOBIP')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/vendorsql')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "SQLOP",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "Vendor_ID",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "Vendor_NAME",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "VENDOR_SSN",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "Vendor_streetname",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Vendor_CITY",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Vendor_STATE",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Vendor_COUNTRY",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Vendor_ZIP",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "Vendor_Phone",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Vendor_EMAIL",
+                        "type": "varchar"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "CDW_SAPP_D_VENDORS_906726"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/SQLOP')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/vendorpartsql')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "SQLOP",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "Vendor_ID",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Vendor_Ssn",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Part_ID",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "part_NAME",
+                        "type": "varchar"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "CDW_SAPP_D_Vendor_parts_906726"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/SQLOP')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/geographysql')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "SQLOP",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "Geography_ID",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "Geography_NAME",
+                        "type": "varchar"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "CDW_SAPP_D_Geography_906726"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/SQLOP')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/factsql')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "SQLOP",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "CUST_ID",
+                        "type": "decimal",
+                        "precision": 10,
+                        "scale": 0
+                    },
+                    {
+                        "name": "CUST_SSN",
+                        "type": "decimal",
+                        "precision": 9,
+                        "scale": 0
+                    },
+                    {
+                        "name": "Vendor_ID",
+                        "type": "decimal",
+                        "precision": 10,
+                        "scale": 0
+                    },
+                    {
+                        "name": "Vendor_NAME",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "VENDOR_SSN",
+                        "type": "decimal",
+                        "precision": 9,
+                        "scale": 0
+                    },
+                    {
+                        "name": "Geography_ID",
+                        "type": "decimal",
+                        "precision": 10,
+                        "scale": 0
+                    },
+                    {
+                        "name": "Geography_NAME",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Part_ID",
+                        "type": "decimal",
+                        "precision": 10,
+                        "scale": 0
+                    },
+                    {
+                        "name": "part_NAME",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "No_of_part",
+                        "type": "decimal",
+                        "precision": 10,
+                        "scale": 0
+                    },
+                    {
+                        "name": "price",
+                        "type": "decimal",
+                        "precision": 10,
+                        "scale": 0
+                    },
+                    {
+                        "name": "tOTAL_PRICE",
+                        "type": "decimal",
+                        "precision": 20,
+                        "scale": 0
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "CDW_SAPP_F_PART_SALE_FACT_906726"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/SQLOP')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/SQLoutput')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureSqlDatabase",
+                "typeProperties": {
+                    "connectionString": "[parameters('SQLoutput_connectionString')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/inputblob')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureBlobStorage",
+                "typeProperties": {
+                    "connectionString": "[parameters('inputblob_connectionString')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/BLOBIP')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureBlobStorage",
+                "typeProperties": {
+                    "connectionString": "[parameters('BLOBIP_connectionString')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/SQLOP')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureSqlDatabase",
+                "typeProperties": {
+                    "connectionString": "[parameters('SQLOP_connectionString')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CustomerDataflow')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "customerblob",
+                                "type": "DatasetReference"
+                            },
+                            "name": "customer"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "customersql",
+                                "type": "DatasetReference"
+                            },
+                            "name": "customerload"
+                        }
+                    ],
+                    "transformations": [
+                        {
+                            "name": "transformcustomer"
+                        }
+                    ],
+                    "script": "source(output(\n\t\tCUST_F_NAME as string,\n\t\tCUST_M_NAME as string,\n\t\tCUST_L_NAME as string,\n\t\tCUST_SSN as string,\n\t\tCUST_STREET as string,\n\t\tCUST_CITY as string,\n\t\tCUST_STATE as string,\n\t\tCUST_COUNTRY as string,\n\t\tCUST_ZIP as string,\n\t\tCUST_PHONE as string,\n\t\tCUST_EMAIL as string,\n\t\tAPT_NO as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> customer\ncustomer derive(CUST_F_NAME = initCap(CUST_F_NAME),\n\t\tCUST_M_NAME = lower(CUST_M_NAME),\n\t\tCUST_L_NAME = initCap(CUST_L_NAME),\n\t\tCUST_SSN = toInteger(CUST_SSN),\n\t\tCUST_STREET = concatWS(\",\", APT_NO,CUST_STREET),\n\t\tCUST_PHONE = concat(substring(CUST_PHONE, 1,3), '-', substring(CUST_PHONE, 4,3), '-', substring(CUST_PHONE, 7,4)),\n\t\tCUST_ZIP = toInteger(CUST_ZIP)) ~> transformcustomer\ntransformcustomer sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tCUST_ID as decimal(10,0),\n\t\tCUST_F_NAME as string,\n\t\tCUST_M_NAME as string,\n\t\tCUST_L_NAME as string,\n\t\tCUST_SSN as decimal(9,0),\n\t\tCUST_STREET as string,\n\t\tCUST_CITY as string,\n\t\tCUST_STATE as string,\n\t\tCUST_COUNTRY as string,\n\t\tCUST_ZIP as decimal(7,0),\n\t\tCUST_PHONE as string,\n\t\tCUST_EMAIL as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tCUST_F_NAME,\n\t\tCUST_M_NAME,\n\t\tCUST_L_NAME,\n\t\tCUST_SSN,\n\t\tCUST_STREET,\n\t\tCUST_CITY,\n\t\tCUST_STATE,\n\t\tCUST_COUNTRY,\n\t\tCUST_ZIP,\n\t\tCUST_PHONE,\n\t\tCUST_EMAIL\n\t)) ~> customerload"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/customerblob')]",
+                "[concat(variables('factoryId'), '/datasets/customersql')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PartDataflow')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "partblob",
+                                "type": "DatasetReference"
+                            },
+                            "name": "part"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "partsql",
+                                "type": "DatasetReference"
+                            },
+                            "name": "loadpart"
+                        }
+                    ],
+                    "transformations": [
+                        {
+                            "name": "parttransform"
+                        }
+                    ],
+                    "script": "source(output(\n\t\tPart_ID as string,\n\t\tpart_NAME as string,\n\t\t{No of part } as string,\n\t\tprice as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> part\npart derive(Part_ID = toInteger(Part_ID)) ~> parttransform\nparttransform sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tPart_ID as integer,\n\t\tpart_NAME as string,\n\t\tNo_of_part as integer,\n\t\tprice as integer\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tPart_ID,\n\t\tpart_NAME,\n\t\tNo_of_part = {No of part },\n\t\tprice\n\t)) ~> loadpart"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/partblob')]",
+                "[concat(variables('factoryId'), '/datasets/partsql')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/VendorpartDataflow')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "vendorsql",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source1"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "vendorpartblob",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source2"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "partsql",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source3"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "vendorpartblob",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source4"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "vendorpartsql",
+                                "type": "DatasetReference"
+                            },
+                            "name": "sink1"
+                        }
+                    ],
+                    "transformations": [
+                        {
+                            "name": "Select1"
+                        },
+                        {
+                            "name": "Lookup1"
+                        },
+                        {
+                            "name": "Select2"
+                        },
+                        {
+                            "name": "Select3"
+                        },
+                        {
+                            "name": "Lookup2"
+                        },
+                        {
+                            "name": "Select4"
+                        },
+                        {
+                            "name": "Join1"
+                        }
+                    ],
+                    "script": "source(output(\n\t\tVendor_ID as integer,\n\t\tVendor_NAME as string,\n\t\tVENDOR_SSN as integer,\n\t\tVendor_streetname as string,\n\t\tVendor_CITY as string,\n\t\tVendor_STATE as string,\n\t\tVendor_COUNTRY as string,\n\t\tVendor_ZIP as integer,\n\t\tVendor_Phone as string,\n\t\tVendor_EMAIL as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source1\nsource(output(\n\t\tVendor_Ssn as string,\n\t\tPart_ID as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source2\nsource(output(\n\t\tPart_ID as integer,\n\t\tpart_NAME as string,\n\t\tNo_of_part as integer,\n\t\tprice as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source3\nsource(output(\n\t\tVendor_Ssn as string,\n\t\tPart_ID as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source4\nsource1 select(mapColumn(\n\t\tVendor_ID,\n\t\tVENDOR_SSN\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nsource2, Select1 lookup(source2@Vendor_Ssn == toString(Select1@VENDOR_SSN),\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> Lookup1\nLookup1 select(mapColumn(\n\t\tVendor_Ssn = source2@Vendor_Ssn,\n\t\tVendor_ID\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select2\nsource3 select(mapColumn(\n\t\tPart_ID,\n\t\tpart_NAME\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select3\nsource4, Select3 lookup(source4@Part_ID == toString(Select3@Part_ID),\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> Lookup2\nLookup2 select(mapColumn(\n\t\tVendor_Ssn,\n\t\tPart_ID = source4@Part_ID,\n\t\tpart_NAME\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select4\nSelect4, Select2 join(Select4@Vendor_Ssn == Select2@Vendor_Ssn,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join1\nJoin1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tVendor_ID as string,\n\t\tVendor_Ssn as string,\n\t\tPart_ID as string,\n\t\tpart_NAME as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tVendor_ID,\n\t\tVendor_Ssn = Select4@Vendor_Ssn,\n\t\tPart_ID,\n\t\tpart_NAME\n\t)) ~> sink1"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/vendorsql')]",
+                "[concat(variables('factoryId'), '/datasets/vendorpartblob')]",
+                "[concat(variables('factoryId'), '/datasets/partsql')]",
+                "[concat(variables('factoryId'), '/datasets/vendorpartsql')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/GeoDataflow')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "geographyblob",
+                                "type": "DatasetReference"
+                            },
+                            "name": "geography"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "geographysql",
+                                "type": "DatasetReference"
+                            },
+                            "name": "loadgeography"
+                        }
+                    ],
+                    "transformations": [
+                        {
+                            "name": "transformgeography"
+                        }
+                    ],
+                    "script": "source(output(\n\t\tGeography_ID as string,\n\t\t{Geography_NAME } as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> geography\ngeography derive(Geography_ID = toInteger(Geography_ID)) ~> transformgeography\ntransformgeography sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tGeography_ID as integer,\n\t\tGeography_NAME as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tGeography_ID,\n\t\tGeography_NAME = {Geography_NAME }\n\t)) ~> loadgeography"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/geographyblob')]",
+                "[concat(variables('factoryId'), '/datasets/geographysql')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/FactDataflow')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "customersql",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source1"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "factblob",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source2"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "vendorsql",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source3"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "geographyblob",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source4"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "partblob",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source5"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "factsql",
+                                "type": "DatasetReference"
+                            },
+                            "name": "sink1"
+                        }
+                    ],
+                    "transformations": [
+                        {
+                            "name": "Select1"
+                        },
+                        {
+                            "name": "Join1"
+                        },
+                        {
+                            "name": "Select2"
+                        },
+                        {
+                            "name": "Select3"
+                        },
+                        {
+                            "name": "Join2"
+                        },
+                        {
+                            "name": "Select4"
+                        },
+                        {
+                            "name": "Join3"
+                        },
+                        {
+                            "name": "Join4"
+                        },
+                        {
+                            "name": "DerivedColumn1"
+                        }
+                    ],
+                    "script": "source(output(\n\t\tCUST_ID as decimal(10,0),\n\t\tCUST_F_NAME as string,\n\t\tCUST_M_NAME as string,\n\t\tCUST_L_NAME as string,\n\t\tCUST_SSN as decimal(9,0),\n\t\tCUST_STREET as string,\n\t\tCUST_CITY as string,\n\t\tCUST_STATE as string,\n\t\tCUST_COUNTRY as string,\n\t\tCUST_ZIP as decimal(7,0),\n\t\tCUST_PHONE as string,\n\t\tCUST_EMAIL as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source1\nsource(output(\n\t\tCUST_SSN as string,\n\t\tVENDOR_SSN as string,\n\t\tGeography_ID as string,\n\t\tPart_ID as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source2\nsource(output(\n\t\tVendor_ID as integer,\n\t\tVendor_NAME as string,\n\t\tVENDOR_SSN as integer,\n\t\tVendor_streetname as string,\n\t\tVendor_CITY as string,\n\t\tVendor_STATE as string,\n\t\tVendor_COUNTRY as string,\n\t\tVendor_ZIP as integer,\n\t\tVendor_Phone as string,\n\t\tVendor_EMAIL as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source3\nsource(output(\n\t\tGeography_ID as string,\n\t\t{Geography_NAME } as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source4\nsource(output(\n\t\tPart_ID as string,\n\t\tpart_NAME as string,\n\t\t{No of part } as string,\n\t\tprice as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source5\nsource1 select(mapColumn(\n\t\tCUST_ID,\n\t\tCUST_SSN\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1, source2 join(toString(Select1@CUST_SSN) == source2@CUST_SSN,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join1\nJoin1 select(mapColumn(\n\t\tCUST_ID,\n\t\tCUST_SSN = source2@CUST_SSN,\n\t\tVENDOR_SSN,\n\t\tGeography_ID,\n\t\tPart_ID\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select2\nsource3 select(mapColumn(\n\t\tVendor_ID,\n\t\tVendor_NAME,\n\t\tVENDOR_SSN\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select3\nSelect3, Select2 join(toString(Select3@VENDOR_SSN) == Select2@VENDOR_SSN,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join2\nJoin2 select(mapColumn(\n\t\tVendor_ID,\n\t\tVendor_NAME,\n\t\tCUST_ID,\n\t\tCUST_SSN,\n\t\tVENDOR_SSN = Select2@VENDOR_SSN,\n\t\tGeography_ID,\n\t\tPart_ID\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select4\nSelect4, source4 join(Select4@Geography_ID == source4@Geography_ID,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join3\nsource5, Select4 join(source5@Part_ID == Select4@Part_ID,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join4\nJoin4 derive(total_price = toInteger({No of part })*toInteger(price)) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tCUST_ID as decimal(10,0),\n\t\tCUST_SSN as decimal(9,0),\n\t\tVendor_ID as decimal(10,0),\n\t\tVendor_NAME as string,\n\t\tVENDOR_SSN as decimal(9,0),\n\t\tGeography_ID as decimal(10,0),\n\t\tGeography_NAME as string,\n\t\tPart_ID as decimal(10,0),\n\t\tpart_NAME as string,\n\t\tNo_of_part as decimal(10,0),\n\t\tprice as decimal(10,0),\n\t\ttOTAL_PRICE as decimal(20,0)\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tCUST_ID,\n\t\tCUST_SSN,\n\t\tVendor_ID,\n\t\tVendor_NAME,\n\t\tVENDOR_SSN,\n\t\tGeography_ID,\n\t\tPart_ID = source5@Part_ID,\n\t\tpart_NAME,\n\t\tNo_of_part = {No of part },\n\t\tprice = total_price,\n\t\ttOTAL_PRICE = total_price\n\t)) ~> sink1"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/customersql')]",
+                "[concat(variables('factoryId'), '/datasets/factblob')]",
+                "[concat(variables('factoryId'), '/datasets/vendorsql')]",
+                "[concat(variables('factoryId'), '/datasets/geographyblob')]",
+                "[concat(variables('factoryId'), '/datasets/partblob')]",
+                "[concat(variables('factoryId'), '/datasets/factsql')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/VendorDataflow')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "vendorblob",
+                                "type": "DatasetReference"
+                            },
+                            "name": "vendor"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "vendorsql",
+                                "type": "DatasetReference"
+                            },
+                            "name": "loadvendor"
+                        }
+                    ],
+                    "transformations": [
+                        {
+                            "name": "vendortransform"
+                        }
+                    ],
+                    "script": "source(output(\n\t\tVendor_NAME as string,\n\t\tVendor_SSN as string,\n\t\tVendor_streetname as string,\n\t\tVendor_CITY as string,\n\t\tVendor_STATE as string,\n\t\t{Vendor_COUNTRY } as string,\n\t\tVendor_ZIP as string,\n\t\tVendor_Phone as string,\n\t\tVendor_EMAIL as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> vendor\nvendor derive(Vendor_NAME = initCap(Vendor_NAME),\n\t\tVendor_streetname = concatWS(\",\", substring(Vendor_streetname, 1, 4), substring(Vendor_streetname, 5, length(Vendor_streetname))),\n\t\tVendor_Phone = concat(substring(Vendor_Phone, 1,3), '-', substring(Vendor_Phone, 4,3), '-', substring(Vendor_Phone, 7,4)),\n\t\tVendor_SSN = toInteger(Vendor_SSN),\n\t\tVendor_ZIP = toInteger(Vendor_ZIP)) ~> vendortransform\nvendortransform sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tVendor_ID as integer,\n\t\tVendor_NAME as string,\n\t\tVENDOR_SSN as integer,\n\t\tVendor_streetname as string,\n\t\tVendor_CITY as string,\n\t\tVendor_STATE as string,\n\t\tVendor_COUNTRY as string,\n\t\tVendor_ZIP as integer,\n\t\tVendor_Phone as string,\n\t\tVendor_EMAIL as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tVendor_NAME,\n\t\tVENDOR_SSN = Vendor_SSN,\n\t\tVendor_streetname,\n\t\tVendor_CITY,\n\t\tVendor_STATE,\n\t\tVendor_COUNTRY = {Vendor_COUNTRY },\n\t\tVendor_ZIP,\n\t\tVendor_Phone,\n\t\tVendor_EMAIL\n\t)) ~> loadvendor"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/vendorblob')]",
+                "[concat(variables('factoryId'), '/datasets/vendorsql')]"
+            ]
+        }
+    ]
+}
